@@ -95,12 +95,32 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(0);
+    expect(options.format.callCount).to.be.equal(1);
     expect(options.format.getCall(0).args[0]).to.only.deep.include({
       namespace: 'foo',
       message: 'bar',
       date: new Date(),
       delay: 0
     });
+
+    var formatThisStub = sinon.stub();
+
+    options = {
+      format: function () {
+        formatThisStub(this);
+      }
+    };
+    logger = debuggy.createLogger(options);
+    debug = logger('foo').debug;
+
+    debug('bar');
+
+    expect(console.log.callCount).to.be.equal(0);
+    expect(formatThisStub.callCount).to.be.equal(1);
+    var firstArg = formatThisStub.getCall(0).args[0];
+    expect(firstArg).to.only.include(['isoDate', 'delay']);
+    expect(firstArg.isoDate).to.be.a.function();
+    expect(firstArg.delay).to.be.a.function();
 
     done();
   });
@@ -173,6 +193,17 @@ describe('debuggy', function () {
         formatISODate(new Date()) + ' +0ms foo: bar');
     expect(console.log.getCall(1).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo::bar baz');
+
+    done();
+  });
+
+  it('allows messages as a printf-format', function (done) {
+    var debug = logger('foo').debug;
+    debug('bar %s', 'baz');
+
+    expect(console.log.callCount).to.be.equal(1);
+    expect(console.log.getCall(0).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo bar baz');
 
     done();
   });
