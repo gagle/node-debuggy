@@ -36,12 +36,12 @@ describe('debuggy', function () {
   var clock;
 
   before(function (done) {
-    process.env.DEBUG = true;
     sinon.stub(console, 'log');
     done();
   });
 
   beforeEach(function (done) {
+    process.env.DEBUG = true;
     logger = debuggy.createLogger();
     clock = sinon.useFakeTimers('Date');
     done();
@@ -62,7 +62,7 @@ describe('debuggy', function () {
   });
 
   it('formats the message with a default formatter', function (done) {
-    var debug1 = logger('foo');
+    var debug1 = logger('foo').debug;
     debug1('bar');
     debug1('baz');
 
@@ -72,7 +72,7 @@ describe('debuggy', function () {
     expect(console.log.getCall(1).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo baz');
 
-    var debug2 = logger('qux');
+    var debug2 = logger('qux').debug;
     debug2('bar');
     debug2('baz');
 
@@ -90,8 +90,9 @@ describe('debuggy', function () {
       format: sinon.stub()
     };
     logger = debuggy.createLogger(options);
+    var debug = logger('foo').debug;
 
-    logger('foo')('bar');
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(0);
     expect(options.format.getCall(0).args[0]).to.only.deep.include({
@@ -107,8 +108,8 @@ describe('debuggy', function () {
   it('does not print anything when the DEBUG flag is not enabled',
       function (done) {
     process.env.DEBUG = '';
-    logger('foo')('bar');
-    process.env.DEBUG = true;
+    var debug = logger('foo').debug;
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(0);
 
@@ -120,9 +121,13 @@ describe('debuggy', function () {
       env: 'TEST'
     });
 
-    logger('foo')('bar');
+    var debug = logger('foo').debug;
+
+    process.env.DEBUG = '';
+    debug('bar');
     process.env.TEST = true;
-    logger('foo')('bar');
+    debug = logger('foo').debug;
+    debug('bar');
     process.env.TEST = '';
 
     expect(console.log.callCount).to.be.equal(1);
@@ -132,12 +137,42 @@ describe('debuggy', function () {
     done();
   });
 
-  it('allows no namespaces', function (done) {
-    logger()('bar');
+  it('allows namespaces without a name', function (done) {
+    var debug = logger().debug;
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
     expect(console.log.getCall(0).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms bar');
+
+    done();
+  });
+
+  it('allows subnamespaces', function (done) {
+    var debug = logger('foo')('bar').debug;
+    debug('baz');
+
+    debug = logger('foo')('bar')('').debug;
+
+    expect(console.log.callCount).to.be.equal(1);
+    expect(console.log.getCall(0).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo:bar baz');
+
+    done();
+  });
+
+  it('allows subnamespaces without a name', function (done) {
+    var debug = logger('foo')().debug;
+    debug('bar');
+
+    debug = logger('foo')()('bar').debug;
+    debug('baz');
+
+    expect(console.log.callCount).to.be.equal(2);
+    expect(console.log.getCall(0).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo: bar');
+    expect(console.log.getCall(1).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo::bar baz');
 
     done();
   });
@@ -147,27 +182,29 @@ describe('debuggy', function () {
     // is 0 (Date.now()  will never be 0)
     clock.tick(1000);
 
-    logger('foo')('1');
+    var debug = logger('foo').debug;
+
+    debug('1');
     expect(console.log.getCall(0).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo 1');
 
     clock.tick(1000);
-    logger('foo')('2');
+    debug('2');
     expect(console.log.getCall(1).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +1s foo 2');
 
     clock.tick(1000 * 60);
-    logger('foo')('3');
+    debug('3');
     expect(console.log.getCall(2).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +1m foo 3');
 
     clock.tick(1000 * 60 * 60);
-    logger('foo')('4');
+    debug('4');
     expect(console.log.getCall(3).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +1h foo 4');
 
     clock.tick(1000 * 60 * 60 * 24);
-    logger('foo')('5');
+    debug('5');
     expect(console.log.getCall(4).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +24h foo 5');
 
@@ -176,22 +213,32 @@ describe('debuggy', function () {
     done();
   });
 
-  it('displays the timezone offset correctly (coverage)', function (done) {
-    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(60);
+  it('displays the timezone offset correctly', function (done) {
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(0);
 
-    logger('foo')('bar');
+    var debug = logger('foo').debug;
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
     expect(console.log.getCall(0).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
-    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(-60);
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(60);
 
-    logger('foo')('bar');
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(2);
     expect(console.log.getCall(1).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo bar');
+
+    Date.prototype.getTimezoneOffset.restore();
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(-60);
+
+    debug('bar');
+
+    expect(console.log.callCount).to.be.equal(3);
+    expect(console.log.getCall(2).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
@@ -199,9 +246,10 @@ describe('debuggy', function () {
     done();
   });
 
-  it('date numbers with zero-padding (coverage)', function (done) {
+  it('formats date numbers with zero-padding when necessary', function (done) {
     clock.tick(1000 * 10);
-    logger('foo')('bar');
+    var debug = logger('foo').debug;
+    debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
     expect(console.log.getCall(0).args[0]).to.be.equal(
