@@ -187,6 +187,15 @@ describe('debuggy', function () {
         formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(0);
+
+    logger('foo')('bar');
+
+    expect(console.log.callCount).to.be.equal(2);
+    expect(console.log.getCall(1).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo bar');
+
+    Date.prototype.getTimezoneOffset.restore();
 
     done();
   });
