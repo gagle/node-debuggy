@@ -1,0 +1,27 @@
+{
+  "name": "debuggy",
+  "version": "0.1.0",
+  "description": "Debugging utility tool for development",
+  "keywords": [
+    "debug",
+    "console",
+    "log",
+    "development"
+  ],
+  "author": "Gabriel Llamas <gagle@outlook.com>",
+  "repository": "git://github.com/gagle/node-debuggy.git",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "devDependencies": {
+    "code": "^1.2.1",
+    "lab": "^5.2.0",
+    "sinon": "^1.12.2"
+  },
+  "scripts": {
+    "test": "node node_modules/lab/bin/lab -t 100",
+    "test-lcov": "node node_modules/lab/bin/lab -t 100 -r lcov"
+  },
+  "license": "MIT",
+  "main": "lib"
+}
