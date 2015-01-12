@@ -72,6 +72,13 @@ Options:
   - __namespace__ - _String_ | _undefined_  
     Name of the namespace.
 
+  `this` points to an object with some formatting functions:
+
+  - __this.isoDate(date) : String__  
+    Returns de ISO date as string including the timezone offset.
+  - __this.delay(ms) : String__
+    Returns a more readable string representation of the delay between logging calls.
+
 Each namespace has a `debug` function to log the messages.
 
 __logger.debug(...message) : undefined__  
