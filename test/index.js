@@ -177,7 +177,7 @@ describe('debuggy', function () {
   });
 
   it('displays the timezone offset correctly (coverage)', function (done) {
-    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(60);
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(0);
 
     logger('foo')('bar');
 
@@ -186,12 +186,21 @@ describe('debuggy', function () {
         formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
-    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(-60);
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(60);
 
     logger('foo')('bar');
 
     expect(console.log.callCount).to.be.equal(2);
     expect(console.log.getCall(1).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo bar');
+
+    Date.prototype.getTimezoneOffset.restore();
+    sinon.stub(Date.prototype, 'getTimezoneOffset').returns(-60);
+
+    logger('foo')('bar');
+
+    expect(console.log.callCount).to.be.equal(3);
+    expect(console.log.getCall(2).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
