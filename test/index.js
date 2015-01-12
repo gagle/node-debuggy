@@ -185,13 +185,18 @@ describe('debuggy', function () {
     var debug = logger('foo')().debug;
     debug('bar');
 
+    debug = logger()()('foo').debug;
+    debug('bar');
+
     debug = logger('foo')()('bar').debug;
     debug('baz');
 
-    expect(console.log.callCount).to.be.equal(2);
+    expect(console.log.callCount).to.be.equal(3);
     expect(console.log.getCall(0).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo: bar');
     expect(console.log.getCall(1).args[0]).to.be.equal(
+        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(2).args[0]).to.be.equal(
         formatISODate(new Date()) + ' +0ms foo::bar baz');
 
     done();
