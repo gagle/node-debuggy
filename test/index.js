@@ -19,13 +19,21 @@ var formatISODate = function (date) {
   var pad = function (n) {
     return (n < 10 ? '0' : '') + n;
   };
+  var padMilliseconds = function (n) {
+    var str = n + '';
+    while (str.length !== 3) {
+      str = '0' + str;
+    }
+    return str;
+  };
 
   return date.getFullYear() + '-' +
       pad(date.getMonth() + 1) + '-' +
       pad(date.getDate()) + 'T' +
       pad(date.getHours()) + ':' +
       pad(date.getMinutes()) + ':' +
-      pad(date.getSeconds()) +
+      pad(date.getSeconds()) + '.' +
+      padMilliseconds(date.getMilliseconds()) +
       diff +
       pad(Math.abs(Math.floor(tzo / 60))) + ':' +
       pad(Math.abs(Math.floor(tzo % 60)));
@@ -283,7 +291,7 @@ describe('debuggy', function () {
   });
 
   it('formats date numbers with zero-padding when necessary', function (done) {
-    clock.tick(1000 * 10);
+    clock.tick(1234 * 10);
     var debug = logger('foo').debug;
     debug('bar');
 

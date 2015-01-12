@@ -1,2 +1,5 @@
-v0.1.0 (11 Jan 2015)
+v0.1.1 (12 Jan 2015)
+  Added milliseconds to the ISO date.
+
+v0.1.0 (12 Jan 2015)
   First release.

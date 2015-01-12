@@ -24,7 +24,7 @@ debug('Booting up HTTPS server');
 ```
 $ node app.js
 $ DEBUG=true node app.js
-2015-01-12T11:13:35+01:00 +0ms boot:http Booting up HTTPS server
+2015-01-12T14:17:00.302+01:00 +0ms boot:http Booting up HTTPS server
 ```
 
 #### Custom formatter and environment variable ####
@@ -50,7 +50,7 @@ debug('Booting up HTTPS server');
 $ node app.js
 $ DEBUG=true node app.js
 $ TEST=true node app.js
-2015-01-12T11:16:46+01:00, +0ms, boot:http, Booting up HTTPS server
+2015-01-12T14:17:50.207+01:00, +0ms, boot:http, Booting up HTTPS server
 ```
 
 ___module_.createLogger([options]) : Function__  
