@@ -82,7 +82,7 @@ Options:
 Each namespace has a `debug` function to log the messages.
 
 __logger.debug(...message) : undefined__  
-Logs a message. It accepts any formatted string. See: [util.format()][util-format].
+Logs a message. It accepts any formatted string. If the first parameter is not a String, it is stringified. See: [util.format()][util-format].
 
 [npm-version-image]: https://img.shields.io/npm/v/debuggy.svg?style=flat
 [npm-url]: https://npmjs.org/package/debuggy
