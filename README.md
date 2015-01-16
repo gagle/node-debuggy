@@ -3,9 +3,9 @@ debuggy
 
 #### Debugging utility tool for development ####
 
-[![npm version][npm-version-image]][npm-url]
-[![Travis][travis-image]][travis-url]
-[![Coveralls][coveralls-image]][coveralls-url]
+[![npm][npm-image]][npm-url]
+[![travis][travis-image]][travis-url]
+[![coveralls][coveralls-image]][coveralls-url]
 
 This utility is similar to the [debug][debug-module] module but without being a singleton; it creates an instance in the user's codebase, that is, it doesn't enable the debug mode of other third-party modules, which is undesirable. By default, the `DEBUG` environment variable is checked to print the messages or not and it can be any truthy value, e.g. `DEBUG=true`, but any environment variable name can be also configured.
 
@@ -84,7 +84,7 @@ Each namespace has a `debug` function to log the messages.
 __logger.debug(...message) : undefined__  
 Logs a message. It accepts any formatted string. If the first parameter is not a String, it is stringified. See: [util.format()][util-format].
 
-[npm-version-image]: https://img.shields.io/npm/v/debuggy.svg?style=flat
+[npm-image]: https://img.shields.io/npm/v/debuggy.svg?style=flat
 [npm-url]: https://npmjs.org/package/debuggy
 [travis-image]: https://img.shields.io/travis/gagle/node-debuggy.svg?style=flat
 [travis-url]: https://travis-ci.org/gagle/node-debuggy
