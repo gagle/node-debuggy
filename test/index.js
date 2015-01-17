@@ -75,20 +75,20 @@ describe('debuggy', function () {
     debug1('baz');
 
     expect(console.log.callCount).to.be.equal(2);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
-    expect(console.log.getCall(1).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo baz');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(1).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo baz');
 
     var debug2 = logger('qux').debug;
     debug2('bar');
     debug2('baz');
 
     expect(console.log.callCount).to.be.equal(4);
-    expect(console.log.getCall(2).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms qux bar');
-    expect(console.log.getCall(3).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms qux baz');
+    expect(console.log.getCall(2).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms qux bar');
+    expect(console.log.getCall(3).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms qux baz');
 
     done();
   });
@@ -159,8 +159,8 @@ describe('debuggy', function () {
     process.env.TEST = '';
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
 
     done();
   });
@@ -170,8 +170,8 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms bar');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms bar');
 
     done();
   });
@@ -183,8 +183,8 @@ describe('debuggy', function () {
     debug = logger('foo')('bar')('').debug;
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo:bar baz');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo:bar baz');
 
     done();
   });
@@ -200,12 +200,12 @@ describe('debuggy', function () {
     debug('baz');
 
     expect(console.log.callCount).to.be.equal(3);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo: bar');
-    expect(console.log.getCall(1).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
-    expect(console.log.getCall(2).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo::bar baz');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo: bar');
+    expect(console.log.getCall(1).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(2).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo::bar baz');
 
     done();
   });
@@ -215,8 +215,8 @@ describe('debuggy', function () {
     debug('bar %s', 'baz');
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar baz');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar baz');
 
     done();
   });
@@ -229,28 +229,28 @@ describe('debuggy', function () {
     var debug = logger('foo').debug;
 
     debug('1');
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo 1');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo 1');
 
     clock.tick(1000);
     debug('2');
-    expect(console.log.getCall(1).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +1s foo 2');
+    expect(console.log.getCall(1).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +1s foo 2');
 
     clock.tick(1000 * 60);
     debug('3');
-    expect(console.log.getCall(2).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +1m foo 3');
+    expect(console.log.getCall(2).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +1m foo 3');
 
     clock.tick(1000 * 60 * 60);
     debug('4');
-    expect(console.log.getCall(3).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +1h foo 4');
+    expect(console.log.getCall(3).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +1h foo 4');
 
     clock.tick(1000 * 60 * 60 * 24);
     debug('5');
-    expect(console.log.getCall(4).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +24h foo 5');
+    expect(console.log.getCall(4).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +24h foo 5');
 
     expect(console.log.callCount).to.be.equal(5);
 
@@ -264,8 +264,8 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
     sinon.stub(Date.prototype, 'getTimezoneOffset').returns(60);
@@ -273,8 +273,8 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(2);
-    expect(console.log.getCall(1).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(1).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
     sinon.stub(Date.prototype, 'getTimezoneOffset').returns(-60);
@@ -282,8 +282,8 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(3);
-    expect(console.log.getCall(2).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(2).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
 
     Date.prototype.getTimezoneOffset.restore();
 
@@ -296,8 +296,8 @@ describe('debuggy', function () {
     debug('bar');
 
     expect(console.log.callCount).to.be.equal(1);
-    expect(console.log.getCall(0).args[0]).to.be.equal(
-        formatISODate(new Date()) + ' +0ms foo bar');
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms foo bar');
 
     done();
   });
