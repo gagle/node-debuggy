@@ -7,7 +7,7 @@ debuggy
 [![travis][travis-image]][travis-url]
 [![coveralls][coveralls-image]][coveralls-url]
 
-This utility is similar to the [debug][debug-module] module but without being a singleton; it creates an instance in the user's codebase, that is, it doesn't enable the debug mode of other third-party modules, which is undesirable. By default, the `DEBUG` environment variable is checked to print the messages or not and it can be any truthy value, e.g. `DEBUG=true`, but any environment variable name can be also configured.
+This utility is similar to the [debug][debug-module] module but without being a singleton, that is, it doesn't enable the debug mode of other third-party modules, which is undesirable. By default, the `DEBUG` environment variable is checked and it can contain any value, e.g. `DEBUG=true`.
 
 The default formatter prints the messages to the stdout but you're free to log them anywhere by configuring a custom formatter. It also allows subnamespaces similar to the [bole][bole-module] module.
 
