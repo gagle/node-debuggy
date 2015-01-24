@@ -17,7 +17,6 @@ var debuggy = require('debuggy');
 var logger = debuggy.createLogger();
 var debug = logger('boot')('http').debug;
 
-// If process.env.DEBUG is truthy, it will print the message
 debug('Booting up HTTPS server');
 ```
 
