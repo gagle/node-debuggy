@@ -1,3 +1,6 @@
+v0.2.0 (24 Jan 2015)
+  Added "debug()" function to "createLogger()".
+
 v0.1.1 (12 Jan 2015)
   Added milliseconds to the ISO date.
 

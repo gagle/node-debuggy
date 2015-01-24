@@ -176,11 +176,20 @@ describe('debuggy', function () {
     done();
   });
 
+  it('namespaces can be optional', function (done) {
+    var debug = logger.debug;
+    debug('bar');
+
+    expect(console.log.callCount).to.be.equal(1);
+    expect(console.log.getCall(0).args[0]).to.be
+        .equal(formatISODate(new Date()) + ' +0ms bar');
+
+    done();
+  });
+
   it('allows subnamespaces', function (done) {
     var debug = logger('foo')('bar').debug;
     debug('baz');
-
-    debug = logger('foo')('bar')('').debug;
 
     expect(console.log.callCount).to.be.equal(1);
     expect(console.log.getCall(0).args[0]).to.be

@@ -33,11 +33,11 @@ $ DEBUG=true node app.js
 var debuggy = require('./lib');
 var logger = debuggy.createLogger({
   env: 'TEST',
-  format: function (stats) {
-    console.log(this.isoDate(stats.date) + ', ' +
-        this.delay(stats.delay) +
-        (stats.namespace ? ', ' + stats.namespace : '') + ', ' +
-        stats.message);
+  format: function (data) {
+    console.log(this.isoDate(data.date) + ', ' +
+        this.delay(data.delay) +
+        (data.namespace ? ', ' + data.namespace : '') + ', ' +
+        data.message);
   }
 });
 var debug = logger('boot')('http').debug;
@@ -54,14 +54,28 @@ $ TEST=true node app.js
 ```
 
 ___module_.createLogger([options]) : Function__  
-Returns a new logger instance. This instance is a function that creates a namespace when called (the namespace is optional). This new namespace can also create new subnamespaces, and so on.
+Returns a new logger instance. This instance is a function that creates a namespace when called (the namespace is optional). This new namespace can also create new subnamespaces, and so on. Each "namespace-maker" function has a `debug` function to log the messages.
+
+```javascript
+var logger = require('debuggy').createLogger();
+var debug;
+
+debug = logger.debug;
+// debug('foo') <timestamp> <delay> 'foo'
+
+debug = logger('a').debug;
+// debug('foo') -> <timestamp> <delay> a 'foo'
+
+debug = logger('a')('b').debug;
+// debug('foo') -> <timestamp> <delay> a:b 'foo'
+```
 
 Options:
 
 - __env__ - _String_  
   Name of the environment variable that's checked to print the messages or not. Default is `DEBUG`.
 - __format__ - _Function_  
-  Function that formats the messages. By default, it prints to the stdout. It receives one argument, `stats`, an object with the raw data. It contains the following properties:
+  Function that formats the messages. By default, it prints to the stdout. It receives one argument, `data`, an object with the raw data. It contains the following properties:
 
   - __date__ - _Date_  
     `Date` instance of the current timestamp.
@@ -78,8 +92,6 @@ Options:
     Returns de ISO date as string including the timezone offset.
   - __this.delay(ms) : String__  
     Returns a more readable string representation of the delay between logging calls.
-
-Each namespace has a `debug` function to log the messages.
 
 __logger.debug(...message) : undefined__  
 Logs a message. It accepts any formatted string. If the first parameter is not a String, it is stringified. See: [util.format()][util-format].
