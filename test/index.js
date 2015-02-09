@@ -106,7 +106,7 @@ describe('debuggy', function () {
     expect(options.format.callCount).to.be.equal(1);
     expect(options.format.getCall(0).args[0]).to.only.deep.include({
       namespace: 'foo',
-      message: 'bar',
+      arguments: ['bar'],
       date: new Date(),
       delay: 0
     });

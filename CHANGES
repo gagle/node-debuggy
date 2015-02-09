@@ -1,3 +1,6 @@
+v1.0.0 (09 Feb 2015)
+  Replaces "data.message" by raw "data.arguments".
+
 v0.2.2 (06 Feb 2015)
   Updated package.json.
 

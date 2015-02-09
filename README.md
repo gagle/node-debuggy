@@ -29,19 +29,22 @@ $ DEBUG=true node app.js
 #### Custom formatter and environment variable ####
 
 ```javascript
+var util = require('util');
 var debuggy = require('./lib');
+
 var logger = debuggy.createLogger({
   env: 'TEST',
+  // This is the default formatter function, adapt it to your needs
   format: function (data) {
     console.log(this.isoDate(data.date) + ', ' +
         this.delay(data.delay) +
         (data.namespace ? ', ' + data.namespace : '') + ', ' +
-        data.message);
+        util.format.apply(null, data.arguments));
   }
 });
 var debug = logger('boot')('http').debug;
 
-// If process.env.DEBUG is truthy is will print the message
+// If process.env.TEST is truthy is will print the message
 debug('Booting up HTTPS server');
 ```
 
@@ -76,12 +79,12 @@ Options:
 - __format__ - _Function_  
   Function that formats the messages. By default, it prints to the stdout. It receives one argument, `data`, an object with the raw data. It contains the following properties:
 
+  - __arguments__ - _Array_  
+    Array of arguments passed to `logger.debug()`.
   - __date__ - _Date_  
     `Date` instance of the current timestamp.
   - __delay__ - _Number_  
     Milliseconds between logging calls.
-  - __message__ - _String_  
-    Message to log.
   - __namespace__ - _String_ | _undefined_  
     Name of the namespace.
 
@@ -92,8 +95,8 @@ Options:
   - __this.delay(ms) : String__  
     Returns a more readable string representation of the delay between logging calls.
 
-__logger.debug(...message) : undefined__  
-Logs a message. It accepts any formatted string. If the first parameter is not a String, it is stringified. See: [util.format()][util-format].
+__logger.debug(...arguments) : undefined__  
+Logs a message. The parameters are untouched and are available in the custom formatter function in the `data.arguments` property.
 
 [npm-image]: https://img.shields.io/npm/v/debuggy.svg?style=flat
 [npm-url]: https://npmjs.org/package/debuggy
